@@ -27,15 +27,15 @@
                 "Stay in school, kid..."
             ],
             defaults = {
+                checkAnswerText:  'Check My Answer!',
                 nextQuestionText: 'Next &raquo;',
                 backButtonText: '',
                 inputType: 'radio',
                 tryAgainText: '',
                 skipStartButton: false,
                 numberOfQuestions: null,
-                randomSort: false,
                 allowHTMLContent: false,
-                limitQuestionType: false,
+                randomSort: false,
                 inlineAnswers: false,
                 displayQuestionNumber: false,
                 randomSortQuestions: false,
@@ -134,7 +134,6 @@
         }
         
         if(plugin.config.inlineAnswers) answersClass += ' inline-answers';
-        if(plugin.config.inputType=='button') plugin.config.preventUnanswered = false;
 
         plugin.method = {
             // Sets up the questions and answers based on above array
@@ -290,12 +289,12 @@
             },
             
             transformEntities: function(strInput){
-                if(plugin.config.allowHTMLContent && strInput)
+                
+                if(plugin.config.allowHTMLContent)
                 {
                     strInput = strInput.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
                         return '&#'+i.charCodeAt(0)+';';
                     });
-                    
                 }
                 
                 return strInput;
@@ -392,13 +391,15 @@
 
                 // If response messaging hasn't been disabled, toggle the proper response
                 if (!plugin.config.disableResponseMessaging) {
+                    // If response messaging hasn't been set to display upon quiz completion, show it now
+                    if (!plugin.config.completionResponseMessaging) {
+                        questionLI.find(_answers).hide();
+                        questionLI.find(_responses).show();
 
-                    questionLI.find(_answers).hide();
-                    questionLI.find(_responses).show();
-
-                    $(checkButton).hide();
-                    questionLI.find(_nextQuestionBtn).fadeIn(300);
-                    questionLI.find(_prevQuestionBtn).fadeIn(300);
+                        $(checkButton).hide();
+                        questionLI.find(_nextQuestionBtn).fadeIn(300);
+                        questionLI.find(_prevQuestionBtn).fadeIn(300);
+                    }
 
                     // Toggle responses based on submission
                     questionLI.find(correctResponse ? _correctResponse : _incorrectResponse).fadeIn(300);
@@ -411,32 +412,30 @@
                 var currentQuestion = $($(nextButton).parents(_question)[0]),
                     nextQuestion    = currentQuestion.next(_question);
                     
-                if (!plugin.config.disableResponseMessaging) {
-                    plugin.method.checkAnswer(nextButton);
-                    setTimeout(function () { plugin.method.moveToNextQuestion(currentQuestion,nextQuestion); }, 1000); 
-                }else{
-                    plugin.method.moveToNextQuestion(currentQuestion,nextQuestion);
-                }
+                    if(plugin.config.disableResponseMessaging)
+                    {
+                        plugin.method.checkAnswer(nextButton);
+                        setTimeout(plugin.method.moveToNexQuestion(currentQuestion,nextQuestion), 1000);
+                    }
+                    else plugin.method.moveToNexQuestion(currentQuestion,nextQuestion);
                 
             },
             
-            moveToNextQuestion: function(currentQuestion, nextQuestion){
-                // If response messaging has been disabled or moved to completion,
-                // make sure we have an answer if we require it, let checkAnswer handle the alert messaging
-                if (plugin.config.inputType!='button'){
-                    var answerInputs    = currentQuestion.find('input:checked');
-                    if(plugin.config.preventUnanswered && answerInputs.length === 0) {
-                        return false;
-                    }
-                }
-
-                if (nextQuestion.length) {
-                    currentQuestion.fadeOut(300, function(){
-                        nextQuestion.find(_prevQuestionBtn).show().end().fadeIn(500);
-                    });
-                } else {
-                    plugin.method.completeQuiz();
-                }
+            moveToNexQuestion: function(currentQuestion,nextQuestion){
+                        // If response messaging has been disabled or moved to completion,
+                        // make sure we have an answer if we require it, let checkAnswer handle the alert messaging
+                        var answerInputs    = currentQuestion.find('input:checked');
+                        if (plugin.config.inputType!='button' && plugin.config.preventUnanswered && answerInputs.length === 0) {
+                            return false;
+                        }
+        
+                        if (nextQuestion.length) {
+                            currentQuestion.fadeOut(300, function(){
+                                nextQuestion.find(_prevQuestionBtn).show().end().fadeIn(500);
+                            });
+                        } else {
+                            plugin.method.completeQuiz();
+                        }
             },
 
             // Go back to the last question

@@ -28,6 +28,7 @@ ul.answers li,
 ul.responses li {
     list-style-type: none;
 }
+ul.answers.inline-answers li{display: inline-block; margin-left: 10px;}
 
 /* Accessibility */
 .quizName span:first-child {
