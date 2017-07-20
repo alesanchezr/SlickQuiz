@@ -1,0 +1,150 @@
+{
+	"info": {
+		"name": "What kind of Bride Are you?",
+		"type": "diagnostic",
+		"categories": ["risk_taker", "free_spirit", "girly_girl", "modern_princess"], 
+		"main": "Your bridal personality plays a big part in how your celebration will turn out. From the reception decor to the fashion choices you make, your bridal style will be evident throughout your wedding. Take this quiz to see which type of bride you are!",
+		"results": "Learn More: Check out the lesson about CSS!."
+	},
+	"questions": [{
+		"q": "What colour scheme are you considering for your big day?",
+		"a": [{
+				"option": "Something bold and unexpected like neon yellow and hot pink.",
+				"category": "risk_taker"
+			},
+			{
+				"option": "Blush pink with pops of fuchsia.",
+				"category": "girly_girl"
+			},
+			{
+				"option": "Something light and airy like white and spring green.",
+				"category": "free_spirit"
+			},
+			{
+				"option": "Soft shades of ivory and gold.",
+				"category": "modern_princess"
+			}
+		]
+	},{
+		"q": "It’s date night for you and your soon-to-be mister. What’s the plan?",
+		"a": [{
+				"option": "A romantic candlelight dinner.",
+				"category": "modern_princess"
+			},
+			{
+				"option": "Heading to the movies to watch the latest chick flick.",
+				"category": "girly_girl"
+			},
+			{
+				"option": "A laid-back picnic in the park.",
+				"category": "free_spirit"
+			},
+			{
+				"option": "Cocktails at the hottest new bar in town.",
+				"category": "risk_taker"
+			}
+		]
+	},{
+		"q": "Whose bridal style do you admire the most?",
+		"a": [{
+				"option": "Kate Middleton. How can you top her custom Alexander McQueen?",
+				"category": "modern_princess"
+			},
+			{
+				"option": "Shenae Grimes. Her black Vera Wang gown was incredible.",
+				"category": "risk_taker"
+			},
+			{
+				"option": "Kate Moss. She was a boho dream in her easy, breezy Galliano.",
+				"category": "free_spirit"
+			},
+			{
+				"option": "Reese Witherspoon. Her blush Monique Lhuillier was absolute perfection.",
+				"category": "girly_girl"
+			}
+		]
+	},{
+		"q": "When you hit the spa for a manicure, what do you pick for your tips?",
+		"a": [{
+				"option": "Bright colours and patterns—you’re all about trendy nail art!",
+				"category": "risk_taker"
+			},
+			{
+				"option": "A nude hue with a bit of shine—clean and classic.",
+				"category": "modern_princess"
+			},
+			{
+				"option": "Pretty petal pink polish.",
+				"category": "girly_girl"
+			},
+			{
+				"option": "Nothing fussy. Just a buff with a clear topcoat.",
+				"category": "free_spirit"
+			}
+		]
+	},{
+		"q": "Which of the following best describes your ideal bridal shoes?",
+		"a": [{
+				"option": "Cute and colourful ballet flats—they’re trendy and comfy.",
+				"category": "girly_girl"
+			},
+			{
+				"option": "Laid-back leather sandals…but you’ll probably end up barefoot!",
+				"category": "free_spirit"
+			},
+			{
+				"option": "Flirty heels with a bow or rosette detail.",
+				"category": "risk_taker"
+			},
+			{
+				"option": "Ivory satin and lace pumps with a hint of sparkle.",
+				"category": "modern_princess"
+			}
+		]
+	},{
+		"q": "When in doubt, what’s the one wardrobe staple you reach for again and again?",
+		"a": [{
+				"option": "A classic little black dress.",
+				"category": "modern_princess"
+			},
+			{
+				"option": "Worn-in blue jeans.",
+				"category": "free_spirit"
+			},
+			{
+				"option": "An edgy skirt with a high-low hemline.",
+				"category": "risk_taker"
+			},
+			{
+				"option": "Anything with ruffles and frills!",
+				"category": "girly_girl"
+			}
+		]
+	}],
+	"categories":[
+        {
+            "slug": "risk_taker",
+            "title": "The Risk Taker",
+            "description": "You’ve never met a trend you didn’t like, and you’re not afraid to break a few rules when it comes to your wedding day. Traditional bridal style is definitely not for you—you’re more of a little white dress, statement necklace, and bejewelled headband type of girl. For your party, you’re sure to mix things up with a single-tier wedding cake and some quirky favours.",
+            "image": "https://www.proprofs.com/api/ckeditor_images/RiskTaker%282%29.jpg"
+        },
+        {
+            "slug": "free_spirit",
+            "title": "The Free Spirit",
+            "description": "You’re not one to sweat the small things, so you’ll keep things simple and chic for your wedding day. Your ideal dress will be light and flowing, your jewellery delicate, your hair accessory inspired by nature. You also favour flowers that look freshly picked from a field and sweet treats with a homemade feel.",
+            "image": "https://www.proprofs.com/api/ckeditor_images/FreeSpirit%283%29.jpg"
+        },
+        {
+            "slug": "girly_girl",
+            "title": "The Girly Girl",
+            "description": "Pink is your signature shade, and you’re planning to incorporate it into your wedding stationery, your flowers, and even your dress! You love anything feminine, so the more ruffles, rosettes and bows, the better. Your day is sure to be filled with pink tulle, voluminous peonies and other ladylike touches.",
+            "image": "https://www.proprofs.com/api/ckeditor_images/Girly%281%29.jpg"
+        },
+        {
+            "slug": "modern_princess",
+            "title": "The Modern-Day Princess",
+            "description": "Grace Kelly and Kate Middleton are your bridal idols, and you’ll do whatever you can to recreate their royal vibe for your special celebration. From a lace wedding gown to a sweeping veil, and an elegant multi-tier cake, you’re all about bringing classic sophistication to your big day.",
+            "image": "https://www.proprofs.com/api/ckeditor_images/Princess%281%29.jpg"
+        }
+    ]
+}

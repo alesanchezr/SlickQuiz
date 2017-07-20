@@ -8,6 +8,7 @@
         <link href="../../css/reset.css" media="screen" rel="stylesheet" type="text/css">
         <link href="../../css/slickQuiz.css" media="screen" rel="stylesheet" type="text/css">
         <link href="styles.css?v4" media="screen" rel="stylesheet" type="text/css">
+        <link href="share.css?v1" media="screen" rel="stylesheet" type="text/css">
     </head>
 
     <body id="slickQuiz">
@@ -22,35 +23,81 @@
 
             <!-- where the quiz gets built -->
         </div>
-
-        <div class="quizResults">
-            <h3 class="quizScore">You Scored: <span><!-- where the quiz score goes --></span></h3>
-
-            <h3 class="quizLevel"><strong>Ranking:</strong> <span><!-- where the quiz ranking level goes --></span></h3>
-
-            <div class="quizResultsCopy">
-                <!-- where the quiz result copy goes -->
+        <div class="quizResults result-card">
+            <h1 class="card-title">Loading...</h1>
+            <img class="card-image" src="" />
+            <p class="card-description">Loading...</p>
+            <div class="social-media">
+                <h3>Share your results!</h3>
+                <!-- Feel free to copy and paste the markup below -->
+            	<!-- Icon-only Branded Twitter button -->
+            	<a class="share-btn share-btn-branded share-btn-twitter"
+            	   href="https://twitter.com/share?url=http%3A%2F%2Fcodepen.io%2Fsunnysingh%2Fpen%2FOPxbgq&text=Share Buttons Demo&via=sunnyismoi"
+            	   title="Share on Twitter">
+            		<span class="share-btn-icon"></span>
+            		<span class="share-btn-text-sr">Twitter</span>
+            	</a>
+            
+            	<!-- Icon-only Branded Facebook button -->
+            	<a class="share-btn share-btn-branded share-btn-facebook"
+            	   href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fcodepen.io%2Fsunnysingh%2Fpen%2FOPxbgq"
+            	   title="Share on Facebook">
+            		<span class="share-btn-icon"></span>
+            		<span class="share-btn-text-sr">Facebook</span>
+            	</a>
+            
+            	<!-- Icon-only Branded Google+ button -->
+            	<a class="share-btn share-btn-branded share-btn-googleplus"
+            	   href="https://plus.google.com/share?url=http%3A%2F%2Fcodepen.io%2Fsunnysingh%2Fpen%2FOPxbgq"
+            	   title="Share on Google+">
+            		<span class="share-btn-icon"></span>
+            		<span class="share-btn-text-sr">Google+</span>
+            	</a>
+            
+            	<!-- Icon-only Branded Reddit button -->
+            	<a class="share-btn share-btn-branded share-btn-reddit"
+            	   href="http://www.reddit.com/submit?url=http%3A%2F%2Fcodepen.io%2Fsunnysingh%2Fpen%2FOPxbgq"
+            	   title="Share on Reddit+">
+            		<span class="share-btn-icon"></span>
+            		<span class="share-btn-text-sr">Reddit</span>
+            	</a>
+            
+            	<!-- Icon-only Branded LinkedIn button -->
+            	<a class="share-btn share-btn-branded share-btn-linkedin"
+            	   href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Fcodepen.io%2Fsunnysingh%2Fpen%2FOPxbgq"
+            	   title="Share on LinkedIn">
+            		<span class="share-btn-icon"></span>
+            		<span class="share-btn-text-sr">LinkedIn</span>
+            	</a>
+            
+            	<!-- Icon-only Branded Pinterest button -->
+            	<a class="share-btn share-btn-branded share-btn-pinterest"
+            	   href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fcodepen.io%2Fsunnysingh%2Fpen%2FOPxbgq"
+            	   title="Share on Pinterest">
+            		<span class="share-btn-icon"></span>
+            		<span class="share-btn-text-sr">Pinterest</span>
+            	</a>
             </div>
         </div>
-
+        
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
         <script src="../../js/slickQuiz.js?v4"></script>
         <script type="text/javascript">
             $(function() {
-                
+                let questions = [];
                 $.ajax({
-                   url: 'data.json', 
+                   url: 'questions.json', 
                    dataType: 'json',
                    cache: false,
                    success: function(data){
                        if(data && data.questions)
                        {
+                           questions = data;
                             $('#slickQuiz').slickQuiz({
                                 json: data,
                                 //preventUnanswered: true,
                                 disableResponseMessaging: true,
                                 inlineAnswers: true,
-                                allowHTMLContent: true,
                                 displayQuestionNumber: false,
                                 inputType: 'button',
                                 onComplete: sendActivity
@@ -62,11 +109,29 @@
                    }
                 });
                 
-                function sendActivity(passed, total){
-                    console.log('You passed '+passed+' from '+total);
+                function sendActivity(results){
+                    var maxOpt = [];
+                    for(category in results){
+                        if(maxOpt.length==0) maxOpt = [ category, results[category] ];
+                        else{ if(results[category]>maxOpt[1]) maxOpt = [category,results[category]]; }
+                    }
+                    
+                    refreshCategory(maxOpt[0]);
+                }
+                
+                function refreshCategory(slug){
+                    questions.categories.forEach(function(cat){
+                       if(slug == cat.slug)
+                       {
+                           document.querySelector('.card-title').innerHTML = cat.title;
+                           document.querySelector('.card-image').src = cat.image;
+                           document.querySelector('.card-description').innerHTML = cat.description;
+                       }
+                    });
                 }
                 
             });
+            
         </script>
     </body>
 </html>

@@ -86,6 +86,7 @@ ol li { list-style-type: decimal; margin-left: 20px; }
 }
 .startQuiz {
     margin-top: 40px;
+    display: block;
 }
 
 .tryAgain {
@@ -157,3 +158,8 @@ ul.responses li.correct p span {
     clear: both;
     margin-top: 20px;
 }
+
+.result-card{overflow: hidden;}
+.result-card .card-image{float: left; margin-right: 10px;}
+.result-card .social-media{text-align: center;}
+.result-card .social-media h3{text-align: center;}

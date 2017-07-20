@@ -15,6 +15,7 @@
             $element = $(element),
             _element = '#' + $element.attr('id'),
             _totalAnswers = [],
+            _categoryPoints = [];
             _messages = {
                 correct: ['That\'s right!'],
                 incorrect: ['Uhh no.']
@@ -133,7 +134,18 @@
             questionCount = questions.length;
         }
         
+        //Apply the inline class if the option is set
         if(plugin.config.inlineAnswers) answersClass += ' inline-answers';
+        
+        if(typeof quizValues.info.type != 'undefined'){
+            if(quizValues.info.type=='diagnostic' && (typeof quizValues.info.categories == 'undefined' || quizValues.info.categories.length==0))
+                throw 'slickQuiz Error: You need to specify the cagetories for the Quizz diagnostic';
+            else{
+                quizValues.info.categories.forEach(function(cat){
+                    _categoryPoints[cat.toLowerCase()] = 0;
+                });
+            }
+        }else quizValues.info.type = 'quiz';
 
         plugin.method = {
             // Sets up the questions and answers based on above array
@@ -412,6 +424,8 @@
                 var currentQuestion = $($(nextButton).parents(_question)[0]),
                     nextQuestion    = currentQuestion.next(_question);
                     
+                    if(quizValues.info.type=='diagnostic') plugin.method.saveAnswerInCategory(nextButton);
+                    
                     if(plugin.config.disableResponseMessaging)
                     {
                         plugin.method.checkAnswer(nextButton);
@@ -421,21 +435,33 @@
                 
             },
             
+            saveAnswerInCategory: function(nextButton){
+                var currentQuestion = $($(nextButton).parents(_question)[0]);
+                
+                var answerInputs    = currentQuestion.find('input:checked');
+                if(plugin.config.inputType=='button')
+                {
+                    var questionId = currentQuestion.attr("data-id");
+                    var optionId = $(nextButton).attr("data-id");
+                    _categoryPoints[questions[questionId].a[optionId].category] += 1;
+                }
+            },
+            
             moveToNexQuestion: function(currentQuestion,nextQuestion){
-                        // If response messaging has been disabled or moved to completion,
-                        // make sure we have an answer if we require it, let checkAnswer handle the alert messaging
-                        var answerInputs    = currentQuestion.find('input:checked');
-                        if (plugin.config.inputType!='button' && plugin.config.preventUnanswered && answerInputs.length === 0) {
-                            return false;
-                        }
-        
-                        if (nextQuestion.length) {
-                            currentQuestion.fadeOut(300, function(){
-                                nextQuestion.find(_prevQuestionBtn).show().end().fadeIn(500);
-                            });
-                        } else {
-                            plugin.method.completeQuiz();
-                        }
+                // If response messaging has been disabled or moved to completion,
+                // make sure we have an answer if we require it, let checkAnswer handle the alert messaging
+                var answerInputs    = currentQuestion.find('input:checked');
+                if (plugin.config.inputType!='button' && plugin.config.preventUnanswered && answerInputs.length === 0) {
+                    return false;
+                }
+                
+                if (nextQuestion.length) {
+                    currentQuestion.fadeOut(300, function(){
+                        nextQuestion.find(_prevQuestionBtn).show().end().fadeIn(500);
+                    });
+                } else {
+                    plugin.method.completeQuiz();
+                }
             },
 
             // Go back to the last question
@@ -497,9 +523,9 @@
                     score     = $(_element + ' ' + _correct).length,
                     levelRank = plugin.method.calculateLevel(score),
                     levelText = $.isNumeric(levelRank) ? levels[levelRank] : '';
-                    
-                if(plugin.config.onComplete) plugin.config.onComplete(score,questionCount);
 
+                if(plugin.config.onComplete) plugin.method.sendResults(score,questionCount);
+                    
                 $(_quizScore + ' span').html(score + ' / ' + questionCount);
                 $(_quizLevel + ' span').html(levelText);
                 $(_quizLevel).addClass('level' + levelRank);
@@ -515,6 +541,11 @@
                         $quizResults.fadeIn(500);
                     }
                 });
+            },
+            
+            sendResults: function(score,questionCount){
+                if(quizValues.info.type=='diagnostic') plugin.config.onComplete(_categoryPoints);
+                else plugin.config.onComplete(score,questionCount);
             },
 
             // Compares selected responses with true answers, returns true if they match exactly
